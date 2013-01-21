@@ -21,17 +21,17 @@ How to Use This Plugin
 
 In the WISIWYG editor the will be a new CodePen icon. 
 
-![](http://)
+![](https://raw.github.com/jawittdesigns/codepen-embed-wordpress-plugin/master/assets/screenshot-1.png)
 
 Click on the CodePen Icon and a popup will appear.  
 
-![](http://)
+![](https://raw.github.com/jawittdesigns/codepen-embed-wordpress-plugin/master/assets/screenshot-2.png)
 
 Fill out the options and click '**insert**'.
 
 The new shortcode will now appear in the WISIWYG editor.
 
-![](http://)
+![](https://raw.github.com/jawittdesigns/codepen-embed-wordpress-plugin/master/assets/screenshot-3.png)
 
 Options
 -------
