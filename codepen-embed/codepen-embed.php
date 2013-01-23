@@ -1,67 +1,66 @@
 <?php
 /*
 Plugin Name: CodePen Embed
-Plugin URI: http://jawittdesigns.com
-Description: Easily Include CodePen Embeds on your WordPress Blog
-Version: 0.1.0 Beta
+Plugin URI: http://wordpress.org/extend/plugins/codepen-embed/
+Version: 0.1.1
 Author: Jason Witt
+Description: Easily Include CodePen Embeds on your WordPress Blog
 Author URI: http://jawittdesigns.com
+Text Domain: codepen-embed
+License: GPL3
 */
+/*  
+CodePen Embed Copyright 2013 Jason Witt (email : contact@jawittdesigns.com)
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+/*===============================================================================
+	Plugin Constants
+===============================================================================*/
+// Plugin URL Constant
+if ( !defined( 'PLUGIN_URL' ) ){
+	define( 'PLUGIN_URL', WP_PLUGIN_URL . '/' . str_replace(basename( __FILE__), "" ,plugin_basename(__FILE__)));
+}
 // Plugin Directory Constant
 if ( !defined( 'PLUGIN_DIR' ) ){
-	define( 'PLUGIN_DIR', WP_PLUGIN_URL . '/' . str_replace(basename( __FILE__), "" ,plugin_basename(__FILE__)));
+	define( 'PLUGIN_DIR', WP_PLUGIN_DIR  . '/' . str_replace(basename( __FILE__), "" ,plugin_basename(__FILE__)));
 }
-// Main Shortcode Function
-if (!function_exists('codepen_shortcode')) {
-	function codepen_shortcode( $atts ){
-		// Get attibutes and set defaults
-			extract(shortcode_atts(array(
-				'href' => '',
-				'user' => '',
-				'show' => '',
-				'height' => '300'
-		   ), $atts));
-		// Display info 
-		$codepen_shortcode = '<pre class="codepen" data-height="'.$height.'" data-type="'.$show.'" data-href="'.$href.'" data-user="'.$user.'" data-safe="true"><code></code><a href="http://codepen.io/'.$user.'/pen/'.$href.'">Check out this Pen!</a></pre>
-	<script async src="http://codepen.io/assets/embed/ei.js"></script>';
-		return $codepen_shortcode;
-	}
-	add_shortcode('codepen', 'codepen_shortcode');
-} else {
-	die( 'The function codepen_shortcode() already exisits!' );
-}
-// Register TinyMCE Custom Button
-if (!function_exists('register_codepen_buttons')) {
-	function register_codepen_buttons($buttons) {
-		array_push($buttons, "|", "codepen_embed");
-		return $buttons;
-	}
-} else {
-	die( 'The function register_codepen_buttons() already exisits!' );
-}
-// Filter the tinyMCE Buttons
-if (!function_exists('add_codepen_button')) {
-	function add_codepen_button() {
-		// Doesn't work if user doesn't have permisions
-		if ( ! current_user_can('edit_posts') && ! current_user_can('edit_pages') )
-			return;
-		if ( get_user_option('rich_editing') == 'true') {
-			add_filter("mce_external_plugins", "add_codepen_plugin");
-			add_filter('mce_buttons', 'register_codepen_buttons');
-		}
-	}
-	add_action('init', 'add_codepen_button');
-} else {
-	die( 'The function add_codepen_button() already exisits!' );
-}
-// Add the Button to the tinyMCE Bar
-if (!function_exists('add_codepen_plugin')) {
-	function add_codepen_plugin($plugin_array) {
-		global $ce_plugin_dir;
-		$plugin_array['codepen_embed'] = PLUGIN_DIR . 'tinymce/codepen-tinymce.js';
-		return $plugin_array;
-	}
-} else {
-	die( 'The function add_codepen_plugin() already exisits!' );
-}
+// Plugin Domain Constant
+if ( !defined( 'DOMAIN' ) ) {
+		define( 'DOMAIN', 'codepen-embed' );
+}	
+/*===============================================================================
+	Includes
+===============================================================================*/
+// Required class.new-tinymce-button.php
+require(PLUGIN_DIR.'includes/class.new-tinymce-button.php');
+// Required class.new_wp_quicktag.php
+require(PLUGIN_DIR.'includes/class.new_wp_quicktag.php');
+// Required cpe_shortcode.php
+require(PLUGIN_DIR.'includes/cpe_shortcode.php');
+// Include cpe_i18n_init.php
+include_once(PLUGIN_DIR.'includes/cpe_i18n_init.php');
+/*===============================================================================
+	Classes
+===============================================================================*/
+// New instance of the new_tinymce_btn() Class 
+new new_tinymce_btn('|','codepen_embed', PLUGIN_URL.'tinymce/codepen-tinymce.js');
+// New instance of the wp_add_quicktags() Class
+new wp_add_quicktags('CodePen','CodePen', '[CodePen height=300 show=html href=aBcdE user=username ]','','','Insert CodePen Embed');
+/*===============================================================================
+	Actions and Filters
+===============================================================================*/
+// Action for cpe_shortcode() function in cpe_shortcode.php
+add_shortcode('CodePen', 'cpe_shortcode');
 ?>
