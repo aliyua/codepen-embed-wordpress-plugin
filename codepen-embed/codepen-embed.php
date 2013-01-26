@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: CodePen Embed
-Plugin URI: http://wordpress.org/extend/plugins/codepen-embed/
+Plugin URI: http://jawittdesigns.github.com/codepen-embed-wordpress-plugin/
 Version: 0.1.1
 Author: Jason Witt
 Description: Easily Include CodePen Embeds on your WordPress Blog
